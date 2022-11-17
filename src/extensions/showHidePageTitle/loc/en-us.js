@@ -5,6 +5,6 @@ define([], function () {
         "DialogTitle": "Change page layout",
         "CloseAL": "Close",
         "BtnSave": "Save",
-        "BtnCancel": "Cancel"
+        "BtnCancel": "Close"
     }
 });
