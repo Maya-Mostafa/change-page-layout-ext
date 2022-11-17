@@ -9,7 +9,7 @@ import { ICommandInfo } from '../IModel';
 import { SHPTContainer } from './SHPTContainer';
 
 const modelProps = {
-    isBlocking: true
+    isBlocking: false,
 };
 const dialogContentProps = {
     type: DialogType.largeHeader,
@@ -32,17 +32,21 @@ export const AppDialog: React.FunctionComponent<IAppDialogProps> = (props) => {
 
     return (
         <>
-            <Dialog
+            <div style={{minWidth: '900px', maxHeight: '500px', borderTop: '4px solid #0078d4', padding: '10px'}}>
+                <h3 style={{color: '#0078d4', fontSize: '20px', margin: 0, minHeight: '20px', padding: '16px 46px 20px 24px'}}>{strings.DialogTitle}</h3>
+                <SHPTContainer Info={props.data} closeDialog={_closeDialog} />
+            </div>
+            {/* <Dialog
                 hidden={hideDialog}
                 onDismiss={toggleHideDialog}
                 dialogContentProps={dialogContentProps}
                 modalProps={modelProps}
-                closeButtonAriaLabel={strings.CloseAL}                
+                closeButtonAriaLabel={strings.CloseAL} 
                 minWidth="900px"
                 maxHeight="500px"
                 responsiveMode={ResponsiveMode.large}>
                     <SHPTContainer Info={props.data} closeDialog={_closeDialog} />
-            </Dialog>
+            </Dialog> */}
         </>
     );
 };
