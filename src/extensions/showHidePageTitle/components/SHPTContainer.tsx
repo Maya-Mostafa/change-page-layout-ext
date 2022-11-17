@@ -32,17 +32,19 @@ export const SHPTContainer: FC<ISHPTContainerProps> = (props) => {
     const { getItemInfo, updatePage } = useSPHelper(props.Info.List.Title);
     const [selPageInfo, setSelPageInfo] = useState<ISelPageInfo[]>(undefined);
     const [finalPageInfo, setFinalPageInfo] = useState<ISelPageInfo[]>(undefined);
-    const [loading, { toggle: toggleLoading }] = useBoolean(true);
+    const [showLoading, setShowLoading] = useState(true);
     const [showActionButtons, { setTrue: visibleActionButtons }] = useBoolean(false);
     const [showActionLoading, { setTrue: visibleActionLoading, setFalse: hideActionLoading }] = useBoolean(false);
     const [disableForSubmission, { toggle: toggleButtonForSubmissions }] = useBoolean(false);
     const [msg, setMsg] = useState<any>(undefined);
 
     const _getSelectedPageInfo = async () => {
+        setShowLoading(true);
+        setMsg(undefined);
         const selInfo: ISelPageInfo[] = await getItemInfo(props.Info.Pages, props.Info.List.Title);
         setSelPageInfo(selInfo);
         setFinalPageInfo(selInfo);
-        toggleLoading();
+        setShowLoading(false);
         if (selInfo.length > 0) {
             var filSelPages: ISelPageInfo[] = selInfo.filter(pi => pi.PageLayoutType.toLowerCase() === "article" || pi.PageLayoutType.toLowerCase() === "home"
                 && !pi.CheckedOutBy);
@@ -81,11 +83,11 @@ export const SHPTContainer: FC<ISHPTContainerProps> = (props) => {
 
     useEffect(() => {
         _getSelectedPageInfo();
-    }, []);
+    }, [JSON.stringify(props.Info)]);
 
     return (
         <div className={styles.shptContainer}>
-            {loading ? (
+            {showLoading ? (
                 <Spinner label="Loading info..." size={SpinnerSize.medium} labelPosition={'bottom'} ariaLive="assertive" />
             ) : (
                 <>
@@ -95,7 +97,7 @@ export const SHPTContainer: FC<ISHPTContainerProps> = (props) => {
                             {msg.message}
                         </MessageBar>
                     }
-                    {!loading && selPageInfo &&
+                    {!showLoading && selPageInfo &&
                         <>
                             <div className={styles.pageContainer}>
                                 {selPageInfo.map((page: ISelPageInfo) => (
